@@ -1,0 +1,15 @@
+.card{
+ background:linear-gradient(
+ 135deg,
+ #4f46e5,
+ #06b6d4
+ );
+ padding:20px;
+ border-radius:12px;
+ color:white;
+ transition:0.3s;
+}
+
+.card:hover{
+ transform:translateY(-5px);
+}

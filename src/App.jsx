@@ -1,21 +1,18 @@
-import { useState } from "react";
-
-import TotalSum from "./components/TotalSum";
-import ExpenseList from "./components/ExpenseList";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
 import ExpenseForm from "./components/ExpenseForm";
+import ExpenseList from "./components/ExpenseList";
+import "./styles/global.css";
 
-function App(){
-  const [refresh,setRefresh] = useState(0);
-
-  const handleExpenseAdded = () => {
-    setRefresh(prev => prev +1);
-  };
-  return(
-    <div className="p-8 flex flex-col gap-6">
-      <TotalSum key = {refresh} />
-      <AddExpense onExpenseAdded={handleExpenseAdded} />
-      <ExpenseForm key ={refresh} />
-      </div>
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/add" element={<ExpenseForm />} />
+        <Route path="/list" element={<ExpenseList />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

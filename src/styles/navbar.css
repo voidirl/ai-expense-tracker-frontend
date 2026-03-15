@@ -1,0 +1,16 @@
+.navbar{
+ height:60px;
+ background:#020617;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:0 20px;
+ border-bottom:1px solid #1e293b;
+}
+
+.navbar input{
+ padding:8px;
+ border-radius:6px;
+ border:none;
+ width:250px;
+}
