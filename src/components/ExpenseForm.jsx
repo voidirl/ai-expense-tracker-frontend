@@ -1,22 +1,23 @@
-import { useState} from "react";
+import { useState } from "react";
 import { addExpense } from "../services/expenseServices";
 
-const ExpenseForm = ({onExpenseAdded}) => {
-    const [form,setForm] = useState({
-        title : "",
-        amount : "",
-        category : "",
-        date:""
-    });
+const ExpenseForm = ({ onExpenseAdded }) => {
+  const [form, setForm] = useState({
+    title: "",
+    amount: "",
+    category: "",
+    onExpenseAddedate: "",
+  });
 
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const handleChange = (e) => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form data:", form);
     setLoading(true);
     try {
       await addExpense({
@@ -25,15 +26,14 @@ const ExpenseForm = ({onExpenseAdded}) => {
       });
       setForm({ title: "", amount: "", category: "", date: "" });
       onExpenseAdded();
-    } 
-    catch (err) {
+    } catch (err) {
       console.error("Failed to add expense:", err);
-    }
-    finally {
+    } finally {
       setLoading(false);
-  }};  
+    }
+  };
 
-    return (
+  return (
     <div className="bg-white rounded-2xl shadow-md p-6 w-96">
       <h2 className="text-lg font-bold mb-4 text-gray-700">Add Expense</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -44,7 +44,7 @@ const ExpenseForm = ({onExpenseAdded}) => {
           value={form.title}
           onChange={handleChange}
           required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
         />
         <input
           type="number"
@@ -53,26 +53,25 @@ const ExpenseForm = ({onExpenseAdded}) => {
           value={form.amount}
           onChange={handleChange}
           required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
         />
-         <input
+        <input
           type="text"
           name="category"
           placeholder="Category (e.g. Food, Travel)"
           value={form.category}
           onChange={handleChange}
           required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
         />
-         <input
+        <input
           type="date"
-          name="date"
+          name="expenseDate"
           value={form.date}
           onChange={handleChange}
           required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
         />
-        
         <button
           type="submit"
           disabled={loading}
