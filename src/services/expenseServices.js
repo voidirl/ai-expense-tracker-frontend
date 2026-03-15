@@ -33,3 +33,13 @@ export const getTotalSum = async () => {
     const res = await fetch(`${BASE_URL}/total`);
     return res.json();
 } ;
+
+export const getByCategory = async (category) => {
+  const res = await fetch(`${BASE_URL}/category/${category}`);
+  return res.json();
+};
+
+export const getByDate = async (date) => {
+  const res = await fetch(`${BASE_URL}/date/${date}`);
+  return res.json();
+};
