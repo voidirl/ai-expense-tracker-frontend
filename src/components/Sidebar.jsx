@@ -3,16 +3,12 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "../styles/sidebar.css"
 
-<motion.div whileHover={{ x: 5 }}>
-  <Link to="/dashboard">Dashboard</Link>
-</motion.div>
-
 export default function Sidebar() {
   return (
     <div style={styles.sidebar}>
       <h2 style={{color:"white"}}>Expense AI</h2>
 
-      <Link style={styles.link} to="/dashboard">
+      <Link style={styles.link} to="/">
         <FaHome/> Dashboard
       </Link>
 
