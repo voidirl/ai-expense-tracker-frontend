@@ -29,10 +29,19 @@ export default function Analytics() {
         </div>
     );
 
+    if (expenses.length === 0) return (
+        <div className="flex items-center justify-center h-full text-gray-400 text-lg">
+            No expenses found. Add some to see analytics!
+        </div>
+    );
+
     const categoryMap = {};
     expenses.forEach(({ category, amount }) => {
         categoryMap[category] = (categoryMap[category] || 0) + amount;
     });
+
+    const categories = Object.keys(categoryMap);
+    const categoryAmounts = Object.values(categoryMap);
 
     const donutData = {
         labels: categories,
@@ -76,9 +85,10 @@ export default function Analytics() {
     };
 
     const total = expenses.reduce((sum, e) => sum + e.amount, 0);
-    const highestCategory = categories.reduce((a, b) =>
-        categoryMap[a] > categoryMap[b] ? a : b
-    );
+    const highestCategory = categories.length > 0
+        ? categories.reduce((a, b) => categoryMap[a] > categoryMap[b] ? a : b)
+        : "N/A";
+    
     const recent = [...expenses]
         .sort((a, b) => new Date(b.expenseDate) - new Date(a.expenseDate))
         .slice(0, 5);
