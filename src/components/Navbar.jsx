@@ -8,12 +8,6 @@ export default function Navbar() {
 
       <h2 style={styles.logo}>Smart Expense Tracker</h2>
 
-      <input
-        type="text"
-        placeholder="Search..."
-        style={styles.search}
-      />
-
       <div style={styles.icons}>
 
         <motion.div whileHover={{ scale: 1.2 }}>
@@ -47,12 +41,6 @@ const styles = {
     fontSize: "20px"
   },
 
-  search: {
-    padding: "8px",
-    borderRadius: "6px",
-    border: "none",
-    width: "250px"
-  },
 
   icons: {
     display: "flex",
