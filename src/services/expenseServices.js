@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api/expenses";
+const BASE_URL = "/api/expenses";
 
 export const getAllExpenses = async () => {
     const res = await fetch(BASE_URL);
