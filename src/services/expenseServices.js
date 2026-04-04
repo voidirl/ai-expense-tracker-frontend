@@ -1,4 +1,4 @@
-const BASE_URL = "/api/expenses";
+const BASE_URL = "https://expense-tracker-backend-production-03a4.up.railway.app/api/expenses";
 
 export const getAllExpenses = async () => {
     const res = await fetch(BASE_URL);
