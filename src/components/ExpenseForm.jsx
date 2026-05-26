@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { addExpense } from "../services/expenseServices";
 
+const inputStyle = {
+  background: "#0d0d0d",
+  border: "0.5px solid #222",
+  borderRadius: "6px",
+  padding: "9px 12px",
+  fontSize: "13px",
+  color: "#e8e6e1",
+  fontFamily: "'DM Sans', sans-serif",
+  outline: "none",
+  width: "100%",
+  transition: "border 0.15s",
+};
+
+const labelStyle = {
+  fontSize: "11px",
+  color: "#444",
+  letterSpacing: "0.05em",
+  marginBottom: "6px",
+  display: "block",
+};
+
 const ExpenseForm = ({ onExpenseAdded }) => {
   const [form, setForm] = useState({
     title: "",
     amount: "",
     category: "",
-    onExpenseAddedate: "",
+    expenseDate: "",
   });
-
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -17,14 +37,10 @@ const ExpenseForm = ({ onExpenseAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data:", form);
     setLoading(true);
     try {
-      await addExpense({
-        ...form,
-        amount: parseFloat(form.amount),
-      });
-      setForm({ title: "", amount: "", category: "", date: "" });
+      await addExpense({ ...form, amount: parseFloat(form.amount) });
+      setForm({ title: "", amount: "", category: "", expenseDate: "" });
       onExpenseAdded();
     } catch (err) {
       console.error("Failed to add expense:", err);
@@ -34,53 +50,63 @@ const ExpenseForm = ({ onExpenseAdded }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 w-96">
-      <h2 className="text-lg font-bold mb-4 text-gray-700">Add Expense</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={handleChange}
-          required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
-        />
-        <input
-          type="number"
-          name="amount"
-          placeholder="Amount"
-          value={form.amount}
-          onChange={handleChange}
-          required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Category (e.g. Food, Travel)"
-          value={form.category}
-          onChange={handleChange}
-          required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
-        />
-        <input
-          type="date"
-          name="expenseDate"
-          value={form.date}
-          onChange={handleChange}
-          required
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-slate-800 text-white"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-500 text-white rounded-lg py-2 text-sm font-semibold hover:bg-blue-600 transition disabled:opacity-50"
-        >
-          {loading ? "Adding..." : "Add Expense"}
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+        <div>
+          <label style={labelStyle}>Title</label>
+          <input style={inputStyle} type="text" name="title" placeholder="e.g. Groceries" value={form.title} onChange={handleChange} required
+            onFocus={e => e.target.style.borderColor = "#444"}
+            onBlur={e => e.target.style.borderColor = "#222"} />
+        </div>
+        <div>
+          <label style={labelStyle}>Amount</label>
+          <input style={inputStyle} type="number" name="amount" placeholder="₹0" value={form.amount} onChange={handleChange} required
+            onFocus={e => e.target.style.borderColor = "#444"}
+            onBlur={e => e.target.style.borderColor = "#222"} />
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+        <div>
+          <label style={labelStyle}>Category</label>
+          <select name="category" value={form.category} onChange={handleChange} required
+            style={{ ...inputStyle, cursor: "pointer" }}>
+            <option value="">Select...</option>
+            <option>Food</option>
+            <option>Rent</option>
+            <option>Travel</option>
+            <option>Shopping</option>
+            <option>Health</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label style={labelStyle}>Date</label>
+          <input style={inputStyle} type="date" name="expenseDate" value={form.expenseDate} onChange={handleChange} required
+            onFocus={e => e.target.style.borderColor = "#444"}
+            onBlur={e => e.target.style.borderColor = "#222"} />
+        </div>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <button type="submit" disabled={loading} style={{
+          background: "#e8e6e1",
+          color: "#0d0d0d",
+          border: "none",
+          borderRadius: "6px",
+          padding: "9px 24px",
+          fontSize: "12px",
+          fontWeight: 500,
+          cursor: loading ? "not-allowed" : "pointer",
+          fontFamily: "'DM Sans', sans-serif",
+          letterSpacing: "0.03em",
+          opacity: loading ? 0.5 : 1,
+          transition: "opacity 0.15s",
+        }}>
+          {loading ? "Adding..." : "Add expense"}
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
