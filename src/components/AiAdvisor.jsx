@@ -26,7 +26,7 @@ export default function AiAdvisor() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://expense-tracker-ai-service-production.up.railway.app/chat", {
+      const res = await fetch("https://expense-tracker-ai-service.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input, expenses }),
@@ -47,11 +47,10 @@ export default function AiAdvisor() {
       <div className="flex-1 overflow-y-auto space-y-3 mb-4 pr-2">
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-lg px-4 py-2 rounded-2xl text-sm ${
-              msg.role === "user"
+            <div className={`max-w-lg px-4 py-2 rounded-2xl text-sm ${msg.role === "user"
                 ? "bg-cyan-600 text-white"
                 : "bg-slate-800 text-gray-200"
-            }`}>
+              }`}>
               {msg.text}
             </div>
           </div>
