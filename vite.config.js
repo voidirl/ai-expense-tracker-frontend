@@ -23,6 +23,10 @@ export default defineConfig(({ mode }) => {
         "/ai-api": {
           target: env.VITE_DEV_AI_PROXY_TARGET || "http://localhost:8000",
           changeOrigin: true,
+          // Unlike nginx's trailing-slash form, Vite forwards the full path, so
+          // the prefix has to be stripped explicitly or the AI service 404s on
+          // /ai-api/chat when it only serves /chat.
+          rewrite: (path) => path.replace(/^\/ai-api/, ""),
         },
       },
     },
