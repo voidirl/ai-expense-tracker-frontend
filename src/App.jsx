@@ -1,23 +1,50 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import ExpenseForm from "./components/ExpenseForm";
-import ExpenseList from "./components/ExpenseList";
-import Analytics from "./components/Analytics";
-import "./styles/global.css";
-import AiAdvisor from "./components/AiAdvisor";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AppShell from "./components/layout/AppShell";
+import Dashboard from "./pages/Dashboard";
+import Expenses from "./pages/Expenses";
+import AiAdvisor from "./pages/AiAdvisor";
+import NotFound from "./pages/NotFound";
+import Spinner from "./components/ui/Spinner";
+import ExpensesProvider from "./context/ExpensesProvider";
 
-function App() {
+// Chart.js is the heaviest dependency and is only needed on /analytics.
+const Analytics = lazy(() => import("./pages/Analytics"));
+
+function RouteFallback() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/add" element={<ExpenseForm />} />
-        <Route path="/list" element={<ExpenseList />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="ai/" element={<AiAdvisor />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="flex items-center justify-center py-16">
+      <Spinner />
+    </div>
   );
 }
 
-export default App;
+/**
+ * Every page is nested under the AppShell layout route, so the sidebar and
+ * topbar are guaranteed on all of them. Analytics, /ai and the old /add route
+ * previously rendered with no navigation at all.
+ */
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ExpensesProvider>
+        <Routes>
+          <Route element={<AppShell />}>
+            <Route index element={<Dashboard />} />
+            <Route path="expenses" element={<Expenses />} />
+            <Route
+              path="analytics"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <Analytics />
+                </Suspense>
+              }
+            />
+            <Route path="ai" element={<AiAdvisor />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </ExpensesProvider>
+    </BrowserRouter>
+  );
+}

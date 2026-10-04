@@ -1,1 +1,85 @@
 @import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-canvas: #0d0d0d;
+  --color-surface: #111111;
+  --color-surface-raised: #1a1a1a;
+  --color-surface-hover: #161616;
+
+  /* Hairlines */
+  --color-line: #1e1e1e;
+  --color-line-subtle: #161616;
+  --color-line-strong: #222222;
+
+  /* Text. ink-subtle is lifted from #444 to clear 4.5:1 on --color-canvas;
+     the original failed WCAG AA at ~2.2:1. */
+  --color-ink: #e8e6e1;
+  --color-ink-muted: #c8c6c1;
+  --color-ink-subtle: #8a8a8a;
+  --color-ink-faint: #6b6b6b;
+
+  /* Accents */
+  --color-accent: #e8e6e1;
+  --color-danger: #b4574f;
+  --color-danger-muted: #7c4a4a;
+  --color-success: #6a9c78;
+
+  /* Type */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Shape */
+  --radius-control: 6px;
+  --radius-panel: 10px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* The old design relied on inline onFocus handlers to fake focus rings,
+     which left keyboard users with no visible indicator on several controls. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-surface-raised);
+    color: var(--color-ink);
+  }
+
+  /* Dark scrollbars to match the canvas instead of the OS light default. */
+  * {
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
