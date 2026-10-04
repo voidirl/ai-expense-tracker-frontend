@@ -1,17 +1,30 @@
-import { defineConfig } from "vite"
-import react from '@vitejs/plugin-react'
-import tailwindcss from "@tailwindcss/vite"
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
-export default defineConfig({
-  plugins: [
-    react(),tailwindcss(),
-  ],
+// https://vite.dev/config/
+export default defineConfig(({ mode }) => {
+  // Empty prefix so VITE_DEV_PROXY_TARGET is read too, not just VITE_* vars
+  // that Vite injects into the client bundle.
+  const env = loadEnv(mode, process.cwd(), "");
 
-  server: {
-    proxy: {
-      '/api': 'http://localhost:8080'
-    }
-  }
-})
+  return {
+    plugins: [react(), tailwindcss()],
 
-
+    server: {
+      // Only used when VITE_API_URL / VITE_AI_URL keep their default
+      // same-origin paths. Point them elsewhere with the matching
+      // VITE_DEV_PROXY_* variable when a service isn't on localhost.
+      proxy: {
+        "/api": {
+          target: env.VITE_DEV_PROXY_TARGET || "http://localhost:8080",
+          changeOrigin: true,
+        },
+        "/ai-api": {
+          target: env.VITE_DEV_AI_PROXY_TARGET || "http://localhost:8000",
+          changeOrigin: true,
+        },
+      },
+    },
+  };
+});
